@@ -62,11 +62,14 @@ function doGet(e) {
 
   if (action === 'setup') {
     const spreadsheet = getOrCreateSpreadsheet_();
+    const recipients = getRecipientEmails_();
     return jsonResponse_(
       {
         ok: true,
         spreadsheetId: spreadsheet.getId(),
         spreadsheetUrl: spreadsheet.getUrl(),
+        recipientEmailsConfigured: recipients.length > 0,
+        selected: readCurrentSelection_(),
       },
       params.callback,
     );
