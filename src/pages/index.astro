@@ -1,0 +1,248 @@
+---
+import '../styles/global.css';
+import { gifts } from '../data/gifts';
+
+const notifyEndpoint = import.meta.env.PUBLIC_NOTIFY_ENDPOINT ?? '';
+const pageTitle = 'Wedding Catalogue Gift';
+const description = 'ウェディングギフトを選ぶための小さなカタログサイトです。';
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <main class="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#82c6ef_0%,#dcd7f1_45%,#fff8fb_100%)] px-4 py-8 text-slate-800 sm:px-6 lg:px-8">
+      <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div class="floating-petal left-[6%] top-[9%] rotate-[-18deg]"></div>
+        <div class="floating-petal left-[86%] top-[12%] rotate-[22deg] delay-2"></div>
+        <div class="floating-petal left-[12%] top-[70%] rotate-[12deg] delay-4"></div>
+        <div class="floating-petal left-[76%] top-[67%] rotate-[-28deg] delay-3"></div>
+        <div class="sparkle-field sparkle-field-one"></div>
+        <div class="sparkle-field sparkle-field-two"></div>
+        <div class="line-flower line-flower-left"></div>
+        <div class="line-flower line-flower-right"></div>
+      </div>
+
+      <section class="relative mx-auto flex max-w-6xl flex-col items-center">
+        <header class="mb-7 mt-5 text-center sm:mb-10 sm:mt-8">
+          <p class="mb-2 text-sm font-semibold tracking-[0.28em] text-white/90 drop-shadow-sm sm:text-base">AKARI WEDDING</p>
+          <h1 class="catalogue-title text-4xl font-black leading-tight text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.95)] sm:text-6xl lg:text-7xl">
+            Wedding Catalogue Gift
+          </h1>
+          <p class="mt-4 text-lg font-semibold text-slate-700 sm:text-2xl">あかり結婚おめでとう！！</p>
+        </header>
+
+        <section class="grid w-full grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12" aria-label="ギフト一覧">
+          {
+            gifts.map((gift, index) => (
+              <article
+                class="gift-card group relative flex min-h-[410px] flex-col items-center"
+                style={`--reveal-delay: ${index * 70}ms`}
+              >
+                <button
+                  type="button"
+                  class="gift-button flex w-full flex-1 flex-col items-center rounded-[6px] border-2 border-transparent bg-white/52 p-3 text-center shadow-[0_18px_38px_rgba(88,95,120,0.12)] transition duration-300 hover:-translate-y-1 hover:border-white hover:bg-white/78 hover:shadow-[0_22px_42px_rgba(88,95,120,0.18)] focus:outline-none focus-visible:border-sky-500 focus-visible:ring-4 focus-visible:ring-white/80"
+                  data-gift-id={gift.id}
+                  data-gift-name={gift.name}
+                  data-gift-message={gift.message}
+                >
+                  <span class="relative block w-full overflow-hidden rounded-[4px] bg-slate-100">
+                    <img
+                      src={gift.image}
+                      alt={`${gift.name}のイラスト`}
+                      class="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.025]"
+                      loading={index < 3 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
+                    <span class="selected-ribbon absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-sky-700 opacity-0 shadow-sm transition">
+                      選択中
+                    </span>
+                  </span>
+                  <span class="mt-4 block text-[1.7rem] font-black leading-none text-slate-800 text-outline sm:text-[1.9rem]">
+                    {gift.name}
+                  </span>
+                  <span class="mt-3 block min-h-[3.4rem] max-w-[18rem] text-balance text-lg font-semibold leading-relaxed text-slate-900 sm:text-xl">
+                    {gift.message}
+                  </span>
+                </button>
+              </article>
+            ))
+          }
+        </section>
+      </section>
+    </main>
+
+    <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-end justify-center bg-slate-900/38 px-4 py-5 backdrop-blur-[2px] sm:items-center" aria-hidden="true">
+      <section class="modal-panel w-full max-w-md rounded-[8px] bg-white p-5 shadow-[0_24px_80px_rgba(31,41,55,0.28)] sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="mb-4 flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-bold tracking-[0.18em] text-sky-500">GIFT SELECT</p>
+            <h2 id="modal-title" class="mt-1 text-2xl font-black text-slate-900">このギフトでいい？</h2>
+          </div>
+          <button id="modal-close" type="button" class="grid h-10 w-10 place-items-center rounded-full border border-slate-200 text-2xl leading-none text-slate-500 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200" aria-label="閉じる">
+            ×
+          </button>
+        </div>
+        <div class="rounded-[6px] bg-sky-50/80 p-4">
+          <p id="modal-gift-name" class="text-3xl font-black text-slate-900"></p>
+          <p id="modal-gift-message" class="mt-2 text-lg font-semibold leading-relaxed text-slate-700"></p>
+        </div>
+        <p id="modal-error" class="mt-4 hidden rounded-[6px] bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700"></p>
+        <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1.3fr]">
+          <button id="modal-cancel" type="button" class="rounded-full border border-slate-200 bg-white px-5 py-3 font-bold text-slate-600 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
+            もう一度見る
+          </button>
+          <button id="modal-submit" type="button" class="rounded-full bg-slate-900 px-5 py-3 font-black text-white shadow-[0_14px_30px_rgba(15,23,42,0.22)] transition hover:-translate-y-0.5 hover:bg-sky-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
+            これを選ぶ！
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div id="success-toast" class="fixed bottom-5 left-1/2 z-50 hidden w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 rounded-[8px] bg-white px-5 py-4 text-center text-base font-bold text-slate-800 shadow-[0_18px_60px_rgba(31,41,55,0.22)] sm:text-lg" role="status">
+      選んでくれてありがとう！贈る側にお知らせしました。
+    </div>
+
+    <script type="application/json" id="gift-config">
+      {JSON.stringify({ notifyEndpoint })}
+    </script>
+    <script>
+      const configElement = document.getElementById('gift-config');
+      const config = configElement ? JSON.parse(configElement.textContent || '{}') : {};
+      const notifyEndpoint = config.notifyEndpoint || '';
+      const buttons = Array.from(document.querySelectorAll('[data-gift-id]'));
+      const modal = document.getElementById('confirm-modal');
+      const modalGiftName = document.getElementById('modal-gift-name');
+      const modalGiftMessage = document.getElementById('modal-gift-message');
+      const modalClose = document.getElementById('modal-close');
+      const modalCancel = document.getElementById('modal-cancel');
+      const modalSubmit = document.getElementById('modal-submit');
+      const modalError = document.getElementById('modal-error');
+      const successToast = document.getElementById('success-toast');
+      let selectedGift = null;
+      let lastFocusedButton = null;
+
+      const showError = (message) => {
+        if (!modalError) return;
+        modalError.textContent = message;
+        modalError.classList.remove('hidden');
+      };
+
+      const clearError = () => {
+        if (!modalError) return;
+        modalError.textContent = '';
+        modalError.classList.add('hidden');
+      };
+
+      const openModal = (gift, trigger) => {
+        selectedGift = gift;
+        lastFocusedButton = trigger;
+        if (modalGiftName) modalGiftName.textContent = gift.name;
+        if (modalGiftMessage) modalGiftMessage.textContent = gift.message;
+        clearError();
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex');
+        modal?.setAttribute('aria-hidden', 'false');
+        modalSubmit?.focus();
+      };
+
+      const closeModal = () => {
+        modal?.classList.add('hidden');
+        modal?.classList.remove('flex');
+        modal?.setAttribute('aria-hidden', 'true');
+        clearError();
+        lastFocusedButton?.focus();
+      };
+
+      const showSuccess = () => {
+        if (!successToast) return;
+        successToast.classList.remove('hidden');
+        window.setTimeout(() => {
+          successToast.classList.add('hidden');
+        }, 6000);
+      };
+
+      const markSelected = (giftId) => {
+        buttons.forEach((button) => {
+          const isSelected = button.getAttribute('data-gift-id') === giftId;
+          button.setAttribute('aria-pressed', String(isSelected));
+          button.classList.toggle('is-selected', isSelected);
+        });
+        try {
+          window.localStorage.setItem('akari-wedding:last-gift', giftId);
+        } catch {
+          // Local storage is only a convenience; ignore unavailable storage.
+        }
+      };
+
+      const sendNotification = async (gift) => {
+        if (!notifyEndpoint) {
+          await new Promise((resolve) => window.setTimeout(resolve, 450));
+          return;
+        }
+
+        const payload = new URLSearchParams({
+          giftId: gift.id,
+          giftName: gift.name,
+          submittedAt: new Date().toISOString(),
+        });
+
+        await fetch(notifyEndpoint, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          },
+          body: payload,
+        });
+      };
+
+      buttons.forEach((button) => {
+        button.setAttribute('aria-pressed', 'false');
+        button.addEventListener('click', () => {
+          openModal(
+            {
+              id: button.getAttribute('data-gift-id'),
+              name: button.getAttribute('data-gift-name'),
+              message: button.getAttribute('data-gift-message'),
+            },
+            button,
+          );
+        });
+      });
+
+      modalClose?.addEventListener('click', closeModal);
+      modalCancel?.addEventListener('click', closeModal);
+      modal?.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+      });
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal?.classList.contains('flex')) closeModal();
+      });
+
+      modalSubmit?.addEventListener('click', async () => {
+        if (!selectedGift || !modalSubmit) return;
+        modalSubmit.setAttribute('disabled', 'true');
+        modalSubmit.textContent = '送信中...';
+        clearError();
+        try {
+          await sendNotification(selectedGift);
+          markSelected(selectedGift.id);
+          closeModal();
+          showSuccess();
+        } catch {
+          showError('送信できませんでした。少し時間を置いてもう一度試してください。');
+        } finally {
+          modalSubmit.removeAttribute('disabled');
+          modalSubmit.textContent = 'これを選ぶ！';
+        }
+      });
+    </script>
+  </body>
+</html>
