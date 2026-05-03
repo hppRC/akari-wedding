@@ -212,19 +212,37 @@ If the final recipient label should not be "あかりさん", change before impl
 
 ### Data Storage
 
-No persistent storage for v1.
+The current implementation stores shared selected-gift state in Google Sheets
+through the Google Apps Script endpoint.
 
-Optional later additions:
+- `current` sheet:
+  - stores the latest selected gift as one data row.
+  - used by the frontend to show the same selected state across devices.
+- `history` sheet:
+  - append-only submission log.
+  - preserves re-submission history for the gift givers.
 
-- Append submissions to Google Sheets for audit history.
-- Store submissions in DynamoDB if AWS is chosen.
-- Store submission JSON in S3 if a minimal AWS-only design is preferred.
+The spreadsheet is created automatically by Apps Script on first submission or
+by calling:
+
+```sh
+curl -L "$PUBLIC_NOTIFY_ENDPOINT?action=setup"
+```
+
+Apps Script Web Apps usually respond with a temporary redirect before the final
+JSON response, so CLI checks should follow redirects.
 
 Selection locking is not required because:
 
 - the URL is intended for one couple only,
 - re-submission is allowed,
 - only one final choice needs to be acted on by the giver.
+
+The frontend reads shared state with JSONP:
+
+```text
+GET $PUBLIC_NOTIFY_ENDPOINT?action=status&callback=...
+```
 
 ## Access Control
 

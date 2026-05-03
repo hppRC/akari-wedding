@@ -7,11 +7,23 @@
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "check": "ASTRO_TELEMETRY_DISABLED=1 astro build"
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "gas:login": "clasp login",
+    "gas:settings": "node -e \"console.log('https://script.google.com/home/usersettings')\"",
+    "gas:script-url": "node -e \"const fs=require('fs'); const p=JSON.parse(fs.readFileSync('.clasp.json','utf8')); console.log('https://script.google.com/d/'+p.scriptId+'/edit')\"",
+    "gas:create": "clasp create --type standalone --title akari-wedding-notify --rootDir tools/google-apps-script",
+    "gas:push": "clasp push -f",
+    "gas:version": "clasp version",
+    "gas:deploy": "clasp push -f && clasp version 'deploy' && clasp deploy --description 'web app'",
+    "gas:deployments": "clasp deployments"
+  },
+  "overrides": {
+    "uuid": "14.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.20",
+    "@google/clasp": "^3.3.0",
     "astro": "6.2.1",
+    "autoprefixer": "10.4.20",
     "postcss": "8.5.10",
     "tailwindcss": "3.4.17",
     "typescript": "5.9.3"
