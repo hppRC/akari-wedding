@@ -42,7 +42,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          PUBLIC_BASE_PATH: /akari-wedding
+          PUBLIC_BASE_PATH: /
           PUBLIC_NOTIFY_ENDPOINT: ${{ secrets.PUBLIC_NOTIFY_ENDPOINT || 'https://script.google.com/macros/s/AKfycbxIdQxIi8rX6ck0Kiw60SBBfGPAbGZvtGgS0jIulCvuIZEa3HLDqUdcnZ9v0IgLjauDKw/exec' }}
 
       - name: Upload artifact
