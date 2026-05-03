@@ -99,6 +99,15 @@ and run it once. This grants the script's own scopes and creates the backing
 Google Sheet. Do not use `clasp login --use-project-scopes` here; Google's
 default clasp OAuth client can be blocked for these project scopes.
 
+Before running `setup`, configure the recipient email addresses in Apps Script:
+
+```text
+Project Settings -> Script Properties -> Add script property
+RECIPIENT_EMAILS=first@example.com,second@example.com
+```
+
+Recipient email addresses are intentionally kept out of the repository.
+
 The Apps Script endpoint stores shared selected-gift state in a Google Sheet.
 The sheet is created automatically on first submission, or can be created from
 the CLI after deployment:

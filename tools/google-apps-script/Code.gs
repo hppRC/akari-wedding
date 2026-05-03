@@ -1,9 +1,20 @@
-const RECIPIENTS = ['yanonay3@gmail.com', 'hpp.ricecake@gmail.com'];
+const RECIPIENT_EMAILS_PROPERTY = 'RECIPIENT_EMAILS';
 const SPREADSHEET_ID_PROPERTY = 'SPREADSHEET_ID';
 const SPREADSHEET_NAME = 'akari-wedding-selection';
 const CURRENT_SHEET_NAME = 'current';
 const HISTORY_SHEET_NAME = 'history';
 const HEADERS = ['giftId', 'giftName', 'giftMessage', 'submittedAt', 'receivedAt'];
+const ALLOWED_GIFT_IDS = [
+  'pajama',
+  'air-cleaner',
+  'facial-device',
+  'bread-maker',
+  'hair-dryer',
+  'garment-steamer',
+  'shower-head',
+  'hot-plate',
+  'air-fryer',
+];
 
 function doPost(e) {
   const params = e && e.parameter ? e.parameter : {};
@@ -13,6 +24,15 @@ function doPost(e) {
   const submittedAt = params.submittedAt || new Date().toISOString();
   const receivedAt = new Date().toISOString();
 
+  if (!isAllowedGiftId_(giftId)) {
+    return jsonResponse_({ ok: false, error: 'invalid_gift_id' });
+  }
+
+  const recipients = getRecipientEmails_();
+  if (recipients.length === 0) {
+    return jsonResponse_({ ok: false, error: 'recipient_emails_not_configured' });
+  }
+
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
@@ -21,7 +41,7 @@ function doPost(e) {
     lock.releaseLock();
   }
 
-  sendSelectionEmail_({ giftName, giftMessage, submittedAt });
+  sendSelectionEmail_({ giftName, giftMessage, submittedAt }, recipients);
 
   return jsonResponse_({ ok: true, selected: readCurrentSelection_() });
 }
@@ -63,12 +83,26 @@ function doGet(e) {
 
 function setup() {
   const spreadsheet = getOrCreateSpreadsheet_();
+  const recipients = getRecipientEmails_();
   return {
     ok: true,
     spreadsheetId: spreadsheet.getId(),
     spreadsheetUrl: spreadsheet.getUrl(),
+    recipientEmailsConfigured: recipients.length > 0,
     selected: readCurrentSelection_(),
   };
+}
+
+function isAllowedGiftId_(giftId) {
+  return ALLOWED_GIFT_IDS.indexOf(giftId) !== -1;
+}
+
+function getRecipientEmails_() {
+  const value = PropertiesService.getScriptProperties().getProperty(RECIPIENT_EMAILS_PROPERTY) || '';
+  return value
+    .split(',')
+    .map((email) => email.trim())
+    .filter((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
 }
 
 function saveSelection_(selection) {
@@ -157,7 +191,7 @@ function ensureHeaders_(sheet) {
   }
 }
 
-function sendSelectionEmail_(selection) {
+function sendSelectionEmail_(selection, recipients) {
   const subject = 'ウェディングギフトが選ばれました';
   const body = [
     'あかりさんがギフトを選びました。',
@@ -170,7 +204,7 @@ function sendSelectionEmail_(selection) {
     .join('\n');
 
   MailApp.sendEmail({
-    to: RECIPIENTS.join(','),
+    to: recipients.join(','),
     subject,
     body,
   });

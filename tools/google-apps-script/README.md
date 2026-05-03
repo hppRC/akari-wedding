@@ -63,9 +63,24 @@ For first-time authorization, open the Apps Script editor URL:
 npm run gas:script-url
 ```
 
-Open the printed URL, choose the `setup` function in the Apps Script editor,
-and run it once. This grants the script's own scopes and creates the backing
-Google Sheet.
+Open the printed URL, configure Script Properties, then choose the `setup`
+function in the Apps Script editor and run it once. This grants the script's own
+scopes and creates the backing Google Sheet.
+
+Required Script Property:
+
+```text
+RECIPIENT_EMAILS=first@example.com,second@example.com
+```
+
+In the Apps Script editor, use:
+
+```text
+Project Settings -> Script Properties -> Add script property
+```
+
+Recipient email addresses are intentionally kept out of the repository because
+the site repository may be public.
 
 Do not use `clasp login --use-project-scopes` or `clasp run setup` for this
 project. Google's default clasp OAuth client can be blocked for these project
@@ -111,6 +126,13 @@ The frontend submits a form-encoded `POST` with:
 
 The frontend uses `fetch(..., { mode: 'no-cors' })` for POST because Apps Script
 does not provide normal CORS control for this use case.
+
+The Apps Script endpoint accepts only the configured gift ids:
+
+```text
+pajama, air-cleaner, facial-device, bread-maker, hair-dryer,
+garment-steamer, shower-head, hot-plate, air-fryer
+```
 
 The frontend reads shared selection state with JSONP:
 

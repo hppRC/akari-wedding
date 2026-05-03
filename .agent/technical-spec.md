@@ -184,9 +184,7 @@ Notification channel priority:
 1. Email
    - Easiest multi-recipient option.
    - Works well through Google Apps Script or form services.
-   - v1 target recipients:
-     - `yanonay3@gmail.com`
-     - `hpp.ricecake@gmail.com`
+   - v1 target recipients are configured in Apps Script Script Properties.
 2. Slack
    - Simple if there is a Slack workspace/channel.
    - Incoming Webhook can notify a channel with multiple people.
@@ -221,6 +219,16 @@ through the Google Apps Script endpoint.
 - `history` sheet:
   - append-only submission log.
   - preserves re-submission history for the gift givers.
+
+Recipient email addresses are stored in Apps Script Script Properties, not in
+the repository:
+
+```text
+RECIPIENT_EMAILS=first@example.com,second@example.com
+```
+
+The notification endpoint rejects submissions whose `giftId` is not one of the
+configured catalogue item ids.
 
 The spreadsheet is created automatically by Apps Script on first submission or
 by calling:
@@ -363,7 +371,7 @@ Resolved:
 - External services are acceptable.
 - Notification-only is enough; persistent storage is not required.
 - Email is the v1 notification channel.
-- v1 email recipients are `yanonay3@gmail.com` and `hpp.ricecake@gmail.com`.
+- v1 email recipients are configured outside the repository.
 - Notification implementation should remain replaceable so Slack or LINE can be added later.
 - Notification text can keep "あかりさんがギフトを選びました。"
 
@@ -460,7 +468,7 @@ Record confirmed decisions here as they are made.
 - 2026-05-03: Use Astro and Tailwind for the frontend.
 - 2026-05-03: Use structured product data, preferably JSON or TypeScript data.
 - 2026-05-03: Use email notification for v1.
-- 2026-05-03: v1 email recipients are `yanonay3@gmail.com` and `hpp.ricecake@gmail.com`.
+- 2026-05-03: v1 email recipients are configured outside the repository.
 - 2026-05-03: Keep the notification implementation replaceable so Slack or LINE can be added later.
 - 2026-05-03: Do not use a passphrase for v1.
 - 2026-05-03: Do not use signed URLs for v1.
