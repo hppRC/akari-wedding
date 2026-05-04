@@ -80,7 +80,6 @@ const tilts = ['-1.4deg', '0.9deg', '-0.7deg', '1.1deg', '-1deg', '0.6deg', '-0.
                   data-gift-message={gift.message}
                   data-gift-image={gift.image}
                 >
-                  <span class="masking-tape" aria-hidden="true"></span>
                   <span class="relative block w-full overflow-hidden bg-[#f8f5ef]">
                     <img
                       src={gift.image}
@@ -107,9 +106,9 @@ const tilts = ['-1.4deg', '0.9deg', '-0.7deg', '1.1deg', '-1deg', '0.6deg', '-0.
       </section>
     </main>
 
-    <div id="confirm-modal" class="font-gated fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-sky-950/30 px-4 py-6 backdrop-blur-[2px]" aria-hidden="true">
-      <section class="modal-panel gift-detail-modal w-full max-w-[28rem] bg-[#fffdf8] p-4 shadow-[0_24px_80px_rgba(74,57,72,0.24)] sm:p-5" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="mb-3 flex items-start justify-between gap-4">
+    <div id="confirm-modal" class="font-gated fixed inset-0 z-50 hidden items-center justify-center overflow-hidden bg-sky-950/30 px-4 py-6 backdrop-blur-[2px]" aria-hidden="true">
+      <section class="modal-panel gift-detail-modal w-full max-w-[29rem] bg-[#fffdf8] p-5 shadow-[0_24px_80px_rgba(74,57,72,0.24)] sm:p-7" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="mb-4 flex items-start justify-between gap-4">
           <div>
             <p class="text-sm font-bold tracking-[0.18em] text-pink-500">GIFT SELECT</p>
             <h2 id="modal-title" class="modal-title mt-1 text-2xl text-slate-900">このギフトでいい？</h2>
@@ -123,12 +122,12 @@ const tilts = ['-1.4deg', '0.9deg', '-0.7deg', '1.1deg', '-1deg', '0.6deg', '-0.
           <img id="modal-gift-image" class="aspect-square w-full object-cover" src="" alt="" decoding="async" />
         </div>
 
-        <div class="modal-gift-copy mt-4 rounded-[6px] border border-pink-100 bg-pink-50/60 p-4 text-center">
+        <div class="modal-gift-copy mt-5 rounded-[6px] border border-pink-100 bg-pink-50/60 p-5 text-center">
           <p id="modal-gift-name" class="gift-name text-3xl text-slate-900"></p>
           <p id="modal-gift-message" class="gift-message mt-3 text-xl leading-relaxed text-slate-700"></p>
         </div>
-        <p id="modal-error" class="mt-4 hidden rounded-[6px] bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700"></p>
-        <div class="modal-choice-actions mt-5 grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1.3fr]">
+        <p id="modal-error" class="mt-5 hidden rounded-[6px] bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700"></p>
+        <div class="modal-choice-actions mt-6 grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1.3fr]">
           <button id="modal-cancel" type="button" class="rounded-full border border-pink-100 bg-white px-5 py-3 font-bold text-slate-600 transition hover:bg-pink-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-200">
             別のプレゼントを見る
           </button>

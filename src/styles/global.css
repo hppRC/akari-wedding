@@ -134,26 +134,6 @@ button {
   opacity: 1;
 }
 
-.masking-tape {
-  position: absolute;
-  top: -11px;
-  left: 50%;
-  z-index: 2;
-  width: 82px;
-  height: 25px;
-  background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 214, 225, 0.78) 0 8px,
-      rgba(255, 244, 205, 0.78) 8px 16px
-    );
-  border-left: 1px dashed rgba(255, 255, 255, 0.72);
-  border-right: 1px dashed rgba(255, 255, 255, 0.72);
-  opacity: 0.95;
-  transform: translateX(-50%) rotate(-2deg);
-  box-shadow: 0 7px 14px rgba(122, 98, 106, 0.08);
-}
-
 .gift-name,
 .modal-title {
   font-family: "Mochiy Pop P One", "Zen Maru Gothic", sans-serif;
@@ -176,29 +156,9 @@ button {
   animation: modal-rise 220ms ease-out both;
 }
 
-.modal-panel::before {
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  z-index: 1;
-  width: 96px;
-  height: 26px;
-  content: "";
-  background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(198, 232, 249, 0.76) 0 8px,
-      rgba(255, 244, 205, 0.72) 8px 16px
-    );
-  border-left: 1px dashed rgba(255, 255, 255, 0.8);
-  border-right: 1px dashed rgba(255, 255, 255, 0.8);
-  transform: translateX(-50%) rotate(1.6deg);
-  box-shadow: 0 8px 18px rgba(86, 72, 92, 0.1);
-}
-
 .modal-panel::after {
   position: absolute;
-  inset: 10px;
+  inset: 14px;
   pointer-events: none;
   content: "";
   border: 2px solid rgba(255, 214, 225, 0.38);
@@ -206,12 +166,12 @@ button {
 }
 
 .gift-detail-modal {
-  max-height: calc(100vh - 3rem);
-  overflow-y: auto;
+  max-height: min(94vh, 48rem);
+  overflow: hidden;
 }
 
 .modal-gift-visual {
-  width: min(100%, 20rem);
+  width: min(100%, 18.5rem, 40vh);
   margin-inline: auto;
   border-color: rgba(255, 214, 225, 0.62);
   box-shadow: 0 14px 30px rgba(86, 72, 92, 0.08);
@@ -420,19 +380,19 @@ button {
   }
 
   .gift-detail-modal {
-    max-width: min(100%, 21.5rem);
+    max-width: min(100%, 22rem);
   }
 
   .modal-gift-visual {
-    width: min(100%, 16.5rem);
+    width: min(100%, 15.75rem, 38vh);
   }
 
   .modal-gift-copy {
-    padding: 0.875rem;
+    padding: 1rem;
   }
 
   .modal-choice-actions {
-    margin-top: 0.875rem;
+    margin-top: 1rem;
   }
 
   .catalogue-sheet::before {
